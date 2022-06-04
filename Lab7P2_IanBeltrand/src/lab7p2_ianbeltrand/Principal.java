@@ -10,7 +10,10 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -68,7 +71,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        AlbumSinglesTree = new javax.swing.JTree();
         CrearCancion = new javax.swing.JDialog();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -83,7 +86,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        ListaCanciones = new javax.swing.JList<>();
         jToolBar4 = new javax.swing.JToolBar();
         jPanel4 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -104,12 +107,19 @@ public class Principal extends javax.swing.JFrame {
         jTextField9 = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        AgregadasList = new javax.swing.JList<>();
         jLabel22 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
+        CancionesAgregar = new javax.swing.JList<>();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        CRUDBibliotecaArtista = new javax.swing.JPopupMenu();
+        Eliminar = new javax.swing.JMenuItem();
+        PopUpTree = new javax.swing.JPopupMenu();
+        AgregarCancion = new javax.swing.JMenuItem();
+        EliminarAlbum = new javax.swing.JMenuItem();
+        PopUpSingles = new javax.swing.JPopupMenu();
+        EliminarSingles = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -253,7 +263,14 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel14.setText("TU BIBLIOTECA DE LANZAMIENTOS");
 
-        jScrollPane1.setViewportView(jTree1);
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Lanzamientos");
+        AlbumSinglesTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        AlbumSinglesTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlbumSinglesTreeMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(AlbumSinglesTree);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -368,12 +385,8 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel16.setText("TODAS LAS CANCIONES, TODO EN LA PALMA DE TU MANO");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList1);
+        ListaCanciones.setModel(new DefaultListModel());
+        jScrollPane2.setViewportView(ListaCanciones);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -497,21 +510,17 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel21.setText("Canciones Añadidas");
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        AgregadasList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane5.setViewportView(jList2);
+        jScrollPane5.setViewportView(AgregadasList);
 
         jLabel22.setText("Canciones");
 
-        jList3.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane6.setViewportView(jList3);
+        CancionesAgregar.setModel(new DefaultListModel());
+        jScrollPane6.setViewportView(CancionesAgregar);
 
         jButton6.setText("AÑADIR");
 
@@ -569,8 +578,8 @@ public class Principal extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton7)
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                                .addComponent(jScrollPane5)))
+                                .addComponent(jScrollPane6)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)))
                         .addContainerGap(33, Short.MAX_VALUE))))
         );
 
@@ -600,6 +609,38 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jTabbedPane2)
                 .addContainerGap())
         );
+
+        Eliminar.setText("Eliminar Cancion");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
+        CRUDBibliotecaArtista.add(Eliminar);
+
+        AgregarCancion.setText("Agregar Cancion");
+        AgregarCancion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgregarCancionActionPerformed(evt);
+            }
+        });
+        PopUpTree.add(AgregarCancion);
+
+        EliminarAlbum.setText("Eliminar Album");
+        EliminarAlbum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarAlbumActionPerformed(evt);
+            }
+        });
+        PopUpTree.add(EliminarAlbum);
+
+        EliminarSingles.setText("EliminarSingles");
+        EliminarSingles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarSinglesActionPerformed(evt);
+            }
+        });
+        PopUpSingles.add(EliminarSingles);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -695,15 +736,18 @@ public class Principal extends javax.swing.JFrame {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
+                    
                     ActualC = cliente;
+                    UsernameS.setText("");
+                    PasswordS.setText("");
+                    AgeS.setText("");
+                    ActualizarListaCanciones();
                     Cliente.setModal(true);
                     Cliente.pack();
                     Cliente.setLocationRelativeTo(this);
                     Cliente.setVisible(true);
+
                     
-                    UsernameS.setText("");
-                    PasswordS.setText("");
-                    AgeS.setText("");
                 }else{
                     JOptionPane.showMessageDialog(SIGNING_IN, "No tienes la edad necesaria");
                 }
@@ -720,14 +764,16 @@ public class Principal extends javax.swing.JFrame {
                         }
                         
                         ActualA = (Artista)artista;
+                        UsernameS.setText("");
+                        PasswordS.setText("");
+                        AgeS.setText("");
+                        ActualizarTreeArtista();
                         Artista.setModal(true);
                         Artista.pack();
                         Artista.setLocationRelativeTo(this);
                         Artista.setVisible(true);
 
-                        UsernameS.setText("");
-                        PasswordS.setText("");
-                        AgeS.setText("");
+                        
                     }else{
                         JOptionPane.showMessageDialog(SIGNING_IN, "No tienes la edad necesaria");
                     }
@@ -746,22 +792,24 @@ public class Principal extends javax.swing.JFrame {
             if(usuario.getUsername().equals(username) && usuario.getPassword().equals(password)){
                 if(usuario.Tipo.equals("Artista")){
                     ActualA = (Artista)usuario;
+                    UsernameL.setText("");
+                    PasswordL.setText("");
                     Artista.setModal(true);
                     Artista.pack();
                     Artista.setLocationRelativeTo(this);
                     Artista.setVisible(true);
                     
-                    UsernameL.setText("");
-                    PasswordL.setText("");
+                    
                 }else{
                     ActualC = (Cliente)usuario;
+                    ActualizarListaCanciones();
+                    UsernameL.setText("");
+                    PasswordL.setText("");
                     Cliente.setModal(true);
                     Cliente.pack();
                     Cliente.setLocationRelativeTo(this);
                     Cliente.setVisible(true);
                     
-                    UsernameL.setText("");
-                    PasswordL.setText("");
                 }
             }else{
                 JOptionPane.showMessageDialog(this, "Password Incorrecta");
@@ -790,30 +838,74 @@ public class Principal extends javax.swing.JFrame {
             
             Artista artista = ActualA;
             artista.getAlbumes().add(album);
+            ActualizarTreeArtista();
         }else{
             if(TipoLanzamientoComboBox.getSelectedItem().toString().equals("Single")){
+                TituloSingle = TituloLanzamientoC.getText();
+                
                 CrearCancion.setModal(true);
                 CrearCancion.pack();
                 CrearCancion.setLocationRelativeTo(this);
                 CrearCancion.setVisible(true);
                 
+                
                 Single single = new Single(TituloLanzamientoC.getText(), new Date(), cancion);
                 
                 Artista artista = ActualA;
                 artista.getSingles().add(single);
+                ActualizarTreeArtista();
             }
         }
     }//GEN-LAST:event_PublicarButtonMouseClicked
 
-    public void ActualizarTreeArstita(){
+    public void ActualizarListaCanciones(){
+        DefaultListModel model = (DefaultListModel)ListaCanciones.getModel();
         
+        model.clear();
+        for (Cancion cancion : admi.canciones){
+            model.addElement(cancion);
+        }
+        
+        ListaCanciones.setModel(model);
+        CancionesAgregar.setModel(model);
+    }
+    
+    public void ActualizarTreeArtista(){
+        DefaultTreeModel model = (DefaultTreeModel)AlbumSinglesTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+        root.removeAllChildren();
+        
+        DefaultMutableTreeNode Singles = new DefaultMutableTreeNode("Singles");
+        DefaultMutableTreeNode canciones = null;
+        
+        for (Single single : ActualA.getSingles()){
+            canciones = new DefaultMutableTreeNode(single.getSingleCancion());
+            Singles.add(canciones);
+        }
+        
+        root.add(Singles);
+        
+        DefaultMutableTreeNode Albums = new DefaultMutableTreeNode("Albums");
+        DefaultMutableTreeNode album = null;
+        
+        for (Album album1 : ActualA.getAlbumes()){
+            album = new DefaultMutableTreeNode(album1);
+            for (Cancion cancion : album1.getCanciones()){
+                canciones = new DefaultMutableTreeNode(cancion);
+                album.add(canciones);
+            }
+            Albums.add(album);
+        }
+        
+        root.add(Albums);
+        model.reload();
     }
     
     private void AñadirCCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AñadirCCMouseClicked
         // TODO add your handling code here:
         String title = TituloCC.getText();
         int Duracion = Integer.parseInt(DuracionCC.getText());
-        String NombreAlbum = albumActual;
+        String NombreAlbum = TituloSingle;
         
         Cancion cancionnueva = new Cancion(title, Duracion, NombreAlbum);
         
@@ -821,6 +913,72 @@ public class Principal extends javax.swing.JFrame {
         admi.canciones.add(cancionnueva);
         CrearCancion.setVisible(false);
     }//GEN-LAST:event_AñadirCCMouseClicked
+
+    private void AlbumSinglesTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlbumSinglesTreeMouseClicked
+        // TODO add your handling code here:
+        if (evt.isMetaDown()) {
+            //seleccionar un nodo con click derecho
+            int row = AlbumSinglesTree.getClosestRowForLocation(evt.getX(), evt.getY());
+            AlbumSinglesTree.setSelectionRow(row);
+            Object Posicion = AlbumSinglesTree.getSelectionPath().getLastPathComponent();
+            SelectedNode = (DefaultMutableTreeNode) Posicion;
+            if (SelectedNode.getUserObject() instanceof Cancion){
+                cancion = (Cancion) SelectedNode.getUserObject();
+                CRUDBibliotecaArtista.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+
+            if (SelectedNode.getUserObject() instanceof Single){
+                singleActual = (Single) SelectedNode.getUserObject();
+                PopUpSingles.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+            
+            if (SelectedNode.getUserObject() instanceof Album){
+                albumActual = (Album) SelectedNode.getUserObject();
+                PopUpTree.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_AlbumSinglesTreeMouseClicked
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        // TODO add your handling code here:
+        cancion = (Cancion) SelectedNode.getUserObject();
+        admi.canciones.remove(cancion);
+        DefaultTreeModel model = (DefaultTreeModel)AlbumSinglesTree.getModel();
+        model.removeNodeFromParent(SelectedNode);
+        model.reload();
+    }//GEN-LAST:event_EliminarActionPerformed
+
+    private void EliminarSinglesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarSinglesActionPerformed
+        // TODO add your handling code here:
+        singleActual = (Single)SelectedNode.getUserObject();
+        ActualA.getSingles().remove(singleActual);
+    }//GEN-LAST:event_EliminarSinglesActionPerformed
+
+    private void AgregarCancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarCancionActionPerformed
+        // TODO add your handling code here:
+        albumActual = (Album)SelectedNode.getUserObject();
+        TituloSingle = albumActual.getTitle();
+        
+        CrearCancion.setModal(true);
+        CrearCancion.pack();
+        CrearCancion.setLocationRelativeTo(this);
+        CrearCancion.setVisible(true);
+        
+        albumActual.getCanciones().add(cancion);
+        
+        ActualizarTreeArtista();
+    }//GEN-LAST:event_AgregarCancionActionPerformed
+
+    private void EliminarAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAlbumActionPerformed
+        // TODO add your handling code here:
+        albumActual = (Album)SelectedNode.getUserObject();
+        
+        DefaultTreeModel model = (DefaultTreeModel)AlbumSinglesTree.getModel();
+        model.removeNodeFromParent(SelectedNode);
+        model.reload();
+        
+        ActualA.getAlbumes().remove(albumActual);
+    }//GEN-LAST:event_EliminarAlbumActionPerformed
 
     /**
      * @param args the command line arguments
@@ -859,14 +1017,25 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AgeS;
+    private javax.swing.JList<String> AgregadasList;
+    private javax.swing.JMenuItem AgregarCancion;
+    private javax.swing.JTree AlbumSinglesTree;
     private javax.swing.JDialog Artista;
     private javax.swing.JButton AñadirCC;
+    private javax.swing.JPopupMenu CRUDBibliotecaArtista;
+    private javax.swing.JList<String> CancionesAgregar;
     private javax.swing.JDialog Cliente;
     private javax.swing.JDialog CrearCancion;
     private javax.swing.JTextField DuracionCC;
+    private javax.swing.JMenuItem Eliminar;
+    private javax.swing.JMenuItem EliminarAlbum;
+    private javax.swing.JMenuItem EliminarSingles;
+    private javax.swing.JList<String> ListaCanciones;
     private javax.swing.JButton LoginButton;
     private javax.swing.JPasswordField PasswordL;
     private javax.swing.JTextField PasswordS;
+    private javax.swing.JPopupMenu PopUpSingles;
+    private javax.swing.JPopupMenu PopUpTree;
     private javax.swing.JButton PublicarButton;
     private javax.swing.JDialog SIGNING_IN;
     private javax.swing.JButton SignInButton;
@@ -902,9 +1071,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
     private javax.swing.JList<String> jList4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -928,15 +1094,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar4;
     private javax.swing.JToolBar jToolBar5;
     private javax.swing.JToolBar jToolBar6;
-    private javax.swing.JTree jTree1;
     private javax.swing.JTree jTree2;
     private javax.swing.JTree jTree3;
     // End of variables declaration//GEN-END:variables
     Admi admi = new Admi();
     Artista ActualA = null;
     Cliente ActualC = null;
-    String albumActual = null;
-    String singleActual = null;
+    Album albumActual = null;
+    Single singleActual = null;
     int CancionesPorCrear = 0;
     Cancion cancion = null;
+    DefaultMutableTreeNode SelectedNode = null;
+    String TituloSingle = "";
 }

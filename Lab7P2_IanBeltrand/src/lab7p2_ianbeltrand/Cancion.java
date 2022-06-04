@@ -40,7 +40,7 @@ public class Cancion {
 
     @Override
     public String toString() {
-        return "Cancion{" + "Title=" + Title + ", Duracion=" + Duracion + ", NombreAlbum=" + NombreAlbum + '}';
+        return Title;
     }
             
 }
